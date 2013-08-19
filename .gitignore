@@ -16,4 +16,10 @@
 *.exe
 
 # Swap files
-.swp
+*.swp
+
+# Dynamic libraries
+*.dll
+
+# SDL2 library
+src/SDL2/
