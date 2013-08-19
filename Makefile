@@ -3,9 +3,13 @@ CC=g++
 CXXFLAGS=-c -Wall -std=c++11
 LDFLAGS = $(addprefix -L,$(LIBSSOURCE)) $(addprefix -l,$(LIBS))
 
-SOURCES := $(wildcard src/*.cpp) $(wildcard src/network/*.cpp)
+SOURCES := $(wildcard src/*.cpp) \
+	$(wildcard src/render/*.cpp)
 OBJECTS := $(addprefix obj/,$(notdir $(SOURCES:.cpp=.o)))
 EXECUTABLE = nafw
+
+vpath %.cpp src/
+vpath %.cpp src/render/
 
 LIBS := mingw32 SDL2main SDL2 SDL2_image SDL2_net
 LIBSSOURCE := "C:\SDL-2.0.0-mingw\lib"
@@ -20,7 +24,7 @@ $(OBJECTS): | obj
 obj:
 	mkdir $@
 
-obj/%.o: src/%.cpp
+obj/%.o: %.cpp
 	$(CC) -o $@ $< $(CXXFLAGS)
 
 clean:

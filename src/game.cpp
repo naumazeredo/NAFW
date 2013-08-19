@@ -1,14 +1,25 @@
+/**
+ *  Not Available Framework
+ *
+ *  Game Application Class
+ *
+ *  coded by Naum Azeredo <naumazeredo@gmail.com>
+ *
+ */
+
 #include <cstdio>
+#include <sstream>
 #include "SDL2/SDL.h"
 #include "game.h"
 #include "timer.h"
+#include "render/renderer.h"
+#include "render/texture.h"
 
 namespace nafw
 {
 
 Game::Game()
 {
-  window_ = nullptr;
   timer_ = new Timer();
 }
 
@@ -18,6 +29,8 @@ Game::~Game()
     SDL_DestroyWindow(window_);
   if (timer_ != nullptr)
     delete timer_;
+  if (renderer_ != nullptr)
+    delete renderer_;
 }
 
 bool Game::Start(const char* title, int argc, char** argv)
@@ -27,6 +40,21 @@ bool Game::Start(const char* title, int argc, char** argv)
   {
     printf("Could not init SDL: %s\n", SDL_GetError());
     return false;
+  }
+
+  // TODO read arguments and config file
+  // Enable VSync
+  /*
+  if (!SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1"))
+  {
+    printf("VSync not enabled!\n");
+  }
+  */
+
+  // Set texture filtering to linear
+  if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear"))
+  {
+    printf("Linear texture filtering not enabled!\n");
   }
 
   // Create window
@@ -43,6 +71,9 @@ bool Game::Start(const char* title, int argc, char** argv)
     printf("Could not create window: %s\n", SDL_GetError());
     return false;
   }
+
+  renderer_ = new Renderer(window_, SDL_RENDERER_ACCELERATED);
+  //renderer_->Init(window_);
 
   return true;
 }
@@ -71,25 +102,43 @@ bool Game::Run()
   physics_dt = 10;
   int physics_accum = 0;
 
-  // FIXME network_dt must be in the network environment
+  // FIXME networking must be in the network environment
+  /*
+  bool network_on = false;
+  //int local_sequence = 0;
+  //int remote_sequence = 0;
   int network_dt = 30;
   int network_accum = 0;
+  */
 
-  //int current_time = SDL_GetTicks();
-
+  // Init timer
   timer_->Init();
+
+  // FPS counter
+  int framecount=0;
+  int frametime=timer_->GetTime();
 
   bool quit = false;
   while (!quit)
   {
     // Update timer
-    //int old_time = current_time;
-    //current_time = SDL_GetTicks();
     timer_->NextFrame();
 
-    physics_accum += timer_->GetDelta();//current_time - old_time;
-    network_accum += timer_->GetDelta();//current_time - old_time;
-    while (physics_accum >= physics_dt || network_accum >= network_dt)
+    // Handle input when network is off
+    //if (!network_on)
+    {
+      if (HandleInputs())
+      {
+        quit = true;
+        break;
+      }
+    }
+
+    // Networking
+    // XXX All networking should be apart
+    /*
+    network_accum += timer_->GetDelta();
+    while (network_on && network_accum >= network_dt)
     {
       // Networking
       // Server->Client
@@ -103,22 +152,29 @@ bool Game::Run()
         {
           quit = true;
 
-          /* TODO Send disconnect to server */
+          // TODO Send disconnect to server
           break;
         }
 
-        /* TODO Send file */
+        // TODO Send file
 
         // Update accumulator
         network_accum -= network_dt;
       }
 
-      /* TODO Send update to server */
+      // TODO Send update to server
+    }
+    */
 
+    // Update physics
+    physics_accum += timer_->GetDelta();
+    while (physics_accum >= physics_dt)
+    {
       // Physics
       if (physics_accum >= physics_dt)
       {
         /* TODO Step physics */
+        // Pass timer_->GetTime() + delta_physics to physics
 
         // Update accumulator
         physics_accum -= physics_dt;
@@ -128,10 +184,32 @@ bool Game::Run()
     /* TODO Integrate the exceding time in physics */
 
     /* TODO Render */
+    renderer_->ClearScreen();
+
+    Draw();
+
+    renderer_->RenderScreen();
+
+    ++framecount;
+    // FPS counter
+    if (timer_->GetTime() - frametime >= 1000)
+    {
+      // Change window title
+      std::ostringstream oss;
+      oss << "Not Available Framework - FPS: " << framecount;
+      SDL_SetWindowTitle(window_, oss.str().c_str());
+
+      framecount = 0;
+      frametime += 1000;
+    }
   }
 
   // Finish game
   return false;
+}
+
+void Game::Draw()
+{
 }
 
 }

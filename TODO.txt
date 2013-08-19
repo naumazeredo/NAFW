@@ -1,0 +1,15 @@
+List of what I still have to implement
+
+DOING:
+- Renderer (20130817)
+
+TODO:
+- Networking
+-- Network static class
+-- Client
+-- Server
+
+- Renderer
+-- Texture container
+
+- Mixer

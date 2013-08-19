@@ -1,5 +1,9 @@
 /*
+ *  Not Available Framework
+ *
  *  Timer class
+ *
+ *  coded by Naum Azeredo <naumazeredo@gmail.com>
  *
  *  \brief: timer?
  *
@@ -25,26 +29,26 @@ class Timer
   ~Timer() {}
 
   // Mutators
-  inline void Init() { this->init_ = SDL_GetTicks(); this->current_ = init_; this->pause_ = 0; }
+  inline void Init() { this->init_ = SDL_GetTicks(); this->current_ = init_; this->paused_ = false; this->pause_ = 0; }
   void NextFrame()
   {
-    if (this->paused_) this->pause_ = SDL_GetTicks() - this->current_;
+    if (this->paused_)
+    {
+      this->pause_ = SDL_GetTicks() - this->current_;
+    }
     else
     {
-      this->delta_ = SDL_GetTicks() - this->current_;
-      //this->current_ += this->delta_;
+      this->current_ += this->delta_;
+      this->delta_ = SDL_GetTicks() - this->current_ - this->pause_;
     }
   }
-  inline void Step(int delta) { this->current_ += delta; }
+  //inline void Step(int delta) { this->current_ += delta; }
   inline void Pause() { this->paused_ = true; }
   inline void Unpause() { this->paused_ = false; }
 
   // Accessors
   inline int GetDelta() const { return this->delta_; }
-  int GetTime() const
-  {
-    return this->current_;
-  }
+  inline int GetTime() const { return this->current_ + this->delta_; }
   inline bool IsPaused() const { return this->paused_; }
 private:
   int init_, current_, delta_, pause_;
