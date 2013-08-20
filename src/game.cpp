@@ -73,9 +73,29 @@ bool Game::Start(const char* title, int argc, char** argv)
   }
 
   renderer_ = new Renderer(window_, SDL_RENDERER_ACCELERATED);
-  //renderer_->Init(window_);
+
+  this->init_ = true;
 
   return true;
+}
+
+void Game::SetFullscreen(bool fullscreen, bool borderless)
+{
+  SDL_assert(this->init_);
+  Uint32 flags = 0;
+
+  this->fullscreen_ = fullscreen || borderless;
+
+  if (fullscreen) flags = SDL_WINDOW_FULLSCREEN;
+  if (borderless) flags = SDL_WINDOW_FULLSCREEN_DESKTOP;
+
+  SDL_SetWindowFullscreen(window_, flags);
+}
+
+void Game::ToggleFullscreen()
+{
+  this->fullscreen_ = !this->fullscreen_;
+  SetFullscreen(this->fullscreen_, false);
 }
 
 bool Game::HandleInputs()
@@ -91,6 +111,9 @@ bool Game::HandleInputs()
     {
       if (event.key.keysym.sym == SDLK_F4 && (event.key.keysym.mod & KMOD_LALT))
         return true;
+
+      if (event.key.keysym.sym == SDLK_RETURN && (event.key.keysym.mod & KMOD_LALT))
+        this->ToggleFullscreen();
     }
   }
 
@@ -99,6 +122,14 @@ bool Game::HandleInputs()
 
 bool Game::Run()
 {
+  SDL_assert(this->init_);
+
+  // Testing area
+  Texture tex;
+  tex.LoadFromFile("assets/pudge.png", renderer_);
+  // -----
+
+  // Physics
   physics_dt = 10;
   int physics_accum = 0;
 
@@ -190,8 +221,8 @@ bool Game::Run()
 
     renderer_->RenderScreen();
 
-    ++framecount;
     // FPS counter
+    ++framecount;
     if (timer_->GetTime() - frametime >= 1000)
     {
       // Change window title
@@ -210,6 +241,8 @@ bool Game::Run()
 
 void Game::Draw()
 {
+  SDL_assert(this->init_);
+
 }
 
 }

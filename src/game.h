@@ -20,6 +20,7 @@ struct SDL_Window;
 // Not Available Framework
 namespace nafw
 {
+
 class Timer;
 class Renderer;
 
@@ -32,6 +33,7 @@ const unsigned int WINDOW_HEIGHT = 480;
  *  \brief Base game class, should be inherited
  */
 // TODO Add Network
+// TODO Add Physics
 // TODO Add Camera (on renderer?)
 class Game
 {
@@ -49,6 +51,7 @@ class Game
 
   // Set fullscreen mode
   void SetFullscreen(bool fullscreen, bool borderless);
+  void ToggleFullscreen();
 
   // Run game logic
   bool Run();
@@ -60,15 +63,19 @@ class Game
   // Handle inputs
   virtual bool HandleInputs();
 
+  // Game was initialized?
+  bool init_ = false;
+
   // Game Window
   SDL_Window* window_ = nullptr;
   int width_, height_;
-  bool fullscreen_;
+  bool fullscreen_ = false;
 
   // Renderer
-  Renderer* renderer_;
+  Renderer* renderer_ = nullptr;
 
   // Physics
+  // TODO Create Physics class
   int physics_dt;
 
   // Game Timer

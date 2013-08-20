@@ -1,5 +1,7 @@
+#include <cstdio>
 #include <cmath>
 #include "../SDL2/SDL_video.h"
+#include "../SDL2/SDL_image.h"
 #include "texture.h"
 #include "renderer.h"
 
@@ -18,25 +20,12 @@ Renderer::Renderer(SDL_Window* window, Uint32 flags)
   SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
 
   // TODO initialize IMG
-}
-
-/*
-bool Renderer::Init(SDL_Window* window, Uint32 flags)
-{
-  renderer_ = SDL_CreateRenderer(window, -1, flags);
-  if (renderer_ == nullptr)
+  if (!IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)
   {
-    printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
-    return false;
+    printf("SDL_image could not be initialized! SDL image error: %s\n", IMG_GetError());
+    return;
   }
-
-  SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
-
-  // TODO initialize IMG
-
-  return true;
 }
-*/
 
 Renderer::~Renderer()
 {
@@ -44,15 +33,31 @@ Renderer::~Renderer()
     SDL_DestroyRenderer(renderer_);
 }
 
-void Renderer::DrawTexture(Texture* texture, const SDL_Rect* clip, const double scale, const double angle)
+void Renderer::DrawTexture(Texture* texture, SDL_Point position, bool flip)
+{
+  DrawTexture(texture, position, NULL, 1.0f, NULL, 0.0, flip);
+}
+
+void Renderer::DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip, bool flip)
+{
+  DrawTexture(texture, position, clip, 1.0f, NULL, 0.0, flip);
+}
+
+void Renderer::DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip, const float scale, bool flip)
+{
+  DrawTexture(texture, position, clip, scale, NULL, 0.0, flip);
+}
+
+void Renderer::DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip, const float scale, const SDL_Point* center, const double angle, bool flip)
 {
   SDL_Rect scalerect;
-  scalerect.x = clip->x * scale;
-  scalerect.y = clip->y * scale;
-  scalerect.w = clip->w * scale;
-  scalerect.h = clip->h * scale;
-  SDL_Point center = texture->GetCenter();
-  SDL_RenderCopyEx(renderer_, texture->GetTexture(), clip, &scalerect, angle, &center, texture->GetFlip());
+  scalerect = {
+    position.x,
+    position.y,
+    (clip != nullptr ? static_cast<int>(clip->w * scale) : static_cast<int>(texture->GetWidth() * scale)),
+    (clip != nullptr ? static_cast<int>(clip->h * scale) : static_cast<int>(texture->GetHeight() * scale))
+  };
+  SDL_RenderCopyEx(renderer_, texture->GetTexture(), clip, &scalerect, angle, center, (flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE));
 }
 
 void Renderer::DrawLine(SDL_Point start, SDL_Point end, SDL_Color color)

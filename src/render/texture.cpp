@@ -1,6 +1,7 @@
 #include <cstdio>
 #include "../SDL2/SDL.h"
 #include "../SDL2/SDL_image.h"
+#include "renderer.h"
 #include "texture.h"
 
 namespace nafw
@@ -11,7 +12,7 @@ Texture::~Texture()
   Free();
 }
 
-bool Texture::LoadFromFile(std::string path, SDL_Renderer* renderer)
+bool Texture::LoadFromFile(std::string path, Renderer* renderer)
 {
   // Deallocate texture
   Free();
@@ -28,7 +29,7 @@ bool Texture::LoadFromFile(std::string path, SDL_Renderer* renderer)
     //SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 0xFF, 0, 0xFF));
 
     // Create texture from surface pixels
-    texture_ = SDL_CreateTextureFromSurface(renderer, surface);
+    texture_ = SDL_CreateTextureFromSurface(renderer->GetRenderer(), surface);
     if (texture_ == nullptr)
     {
       printf("Could not create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError());

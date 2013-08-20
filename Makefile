@@ -1,5 +1,5 @@
 # C++ Compiler
-CC=g++
+CXX=g++
 CXXFLAGS=-c -Wall -std=c++11
 LDFLAGS = $(addprefix -L,$(LIBSSOURCE)) $(addprefix -l,$(LIBS))
 
@@ -15,9 +15,11 @@ LIBS := mingw32 SDL2main SDL2 SDL2_image SDL2_net
 LIBSSOURCE := "C:\SDL-2.0.0-mingw\lib"
 
 all: $(SOURCES) $(EXECUTABLE)
+release: CXX += -DSDL_ASSERT_LEVEL=1
+release: $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) -o $@ $^ $(LDFLAGS)
+	$(CXX) -o $@ $^ $(LDFLAGS)
 
 $(OBJECTS): | obj
 
@@ -25,7 +27,7 @@ obj:
 	mkdir $@
 
 obj/%.o: %.cpp
-	$(CC) -o $@ $< $(CXXFLAGS)
+	$(CXX) -o $@ $< $(CXXFLAGS)
 
 clean:
 	- $(RM) -R obj $(addsuffix .exe,$(EXECUTABLE))
