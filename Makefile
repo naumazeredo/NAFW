@@ -1,6 +1,6 @@
 # C++ Compiler
 CXX=g++
-CXXFLAGS=-c -Wall -std=c++11
+CXXFLAGS=-c -O -Wall -std=c++11
 LDFLAGS = $(addprefix -L,$(LIBSSOURCE)) $(addprefix -l,$(LIBS))
 
 SOURCES := $(wildcard src/*.cpp) \

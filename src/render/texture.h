@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef NAFW_TEXTURE_H_
-#define NAFW_TEXTURE_H_
+#ifndef NAFW_RENDER_TEXTURE_H_
+#define NAFW_RENDER_TEXTURE_H_
 
 #include <string>
 #include "../SDL2/SDL_stdinc.h"
@@ -55,4 +55,4 @@ class Texture
 
 }
 
-#endif//NAFW_TEXTURE_H_
+#endif//NAFW_RENDER_TEXTURE_H_

@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef NAFW_RENDERER_H_
-#define NAFW_RENDERER_H_
+#ifndef NAFW_RENDER_RENDERER_H_
+#define NAFW_RENDER_RENDERER_H_
 
 #include <map>
 #include <string>
@@ -64,4 +64,4 @@ class Renderer
 
 }
 
-#endif//NAFW_RENDERER_H_
+#endif//NAFW_RENDER_RENDERER_H_

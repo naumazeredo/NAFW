@@ -1,7 +1,10 @@
 List of what I still have to implement
 
+DONE:
+- Renderer (20130817 -> 20130819)
+
 DOING:
-- Renderer (20130817)
+- GUI (20130819)
 
 TODO:
 - Networking
