@@ -31,11 +31,13 @@ class Texture
 {
  public:
   // Constructor and Destructor
-  Texture() : texture_(nullptr), width_(0), height_(0) {}
+  Texture() : renderer_(nullptr) {}
+  explicit Texture(Renderer* renderer) : renderer_(renderer) {}
   ~Texture();
 
   // Mutators
-  bool LoadFromFile(std::string path, Renderer* renderer);
+  inline void SetRenderer(Renderer* renderer) { renderer_ = renderer; }
+  bool Load(std::string path);
   void SetColor(Uint8 r, Uint8 g, Uint8 b);
   void SetBlendMode(SDL_BlendMode blending);
   void SetAlpha(Uint8 alpha);
@@ -44,13 +46,22 @@ class Texture
   // Accessors
   inline int GetWidth() const { return width_; }
   inline int GetHeight() const { return height_; }
-  inline SDL_Texture *GetTexture() const { return texture_; }
+  SDL_Texture* GetTexture();
  public:
+  // Renderer
+  Renderer* renderer_;
+
   // Hardware texture
   SDL_Texture* texture_;
 
+  // Texture path
+  std::string path_;
+
   // Image dimensions
-  int width_, height_;
+  int width_=0, height_=0;
+
+  // Verifiers
+  bool loaded_=false;
 };
 
 }

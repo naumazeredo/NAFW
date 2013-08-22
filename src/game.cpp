@@ -125,8 +125,6 @@ bool Game::Run()
   SDL_assert(this->init_);
 
   // Testing area
-  Texture tex;
-  tex.LoadFromFile("assets/pudge.png", renderer_);
   // -----
 
   // Physics

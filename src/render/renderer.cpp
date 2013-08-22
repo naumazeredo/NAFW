@@ -31,6 +31,24 @@ Renderer::~Renderer()
 {
   if (renderer_ != nullptr)
     SDL_DestroyRenderer(renderer_);
+
+  // Destroy textures
+  if (!texture_container_.empty())
+    for (auto& it : texture_container_)
+      delete std::get<1>(it);
+}
+
+Texture* Renderer::LoadTexture(std::string path)
+{
+  // Verify if texture was already loaded
+  auto it = texture_container_.find(path);
+  if (it != texture_container_.end())
+    return it->second->GetTexture();
+
+  // If not, create and load the new texture
+  texture_container_[path] = new Texture(this);
+  texture_container_[path]->Load(path);
+  return texture_container_[path]->GetTexture();
 }
 
 void Renderer::DrawTexture(Texture* texture, SDL_Point position, bool flip)

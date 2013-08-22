@@ -19,6 +19,7 @@
 #include "../SDL2/SDL_render.h"
 #include "constants.h"
 
+struct SDL_Texture;
 struct SDL_Window;
 struct SDL_Renderer;
 
@@ -34,12 +35,15 @@ class Renderer
 {
  public:
   // Constructor and Destructor
-  Renderer() {}
+  //Renderer() {}
   Renderer(SDL_Window* window, Uint32 flags);
   ~Renderer();
 
   // Return Renderer
   inline SDL_Renderer* GetRenderer() const { return renderer_; }
+
+  // Texture loader
+  Texture* LoadTexture(std::string path);
 
   // Texture draw
   //void DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip = nullptr, const double scale = 1.0, const double angle = 0.0);
@@ -60,6 +64,10 @@ class Renderer
  private:
   // SDL Renderer
   SDL_Renderer* renderer_ = nullptr;
+
+  // Texture Container
+  // FIXME textures can change properties, so it shouldnt be contained by path
+  std::map<std::string, Texture*> texture_container_;
 };
 
 }
