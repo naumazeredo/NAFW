@@ -43,12 +43,12 @@ Texture* Renderer::LoadTexture(std::string path)
   // Verify if texture was already loaded
   auto it = texture_container_.find(path);
   if (it != texture_container_.end())
-    return it->second->GetTexture();
+    return it->second;
 
   // If not, create and load the new texture
   texture_container_[path] = new Texture(this);
   texture_container_[path]->Load(path);
-  return texture_container_[path]->GetTexture();
+  return texture_container_[path];
 }
 
 void Renderer::DrawTexture(Texture* texture, SDL_Point position, bool flip)
