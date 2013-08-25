@@ -44,14 +44,6 @@ class Renderer
   // Texture loader
   Texture* LoadTexture(std::string path);
 
-  /*
-  // Texture draw
-  void DrawTexture(Texture* texture, SDL_Point position, bool flip = false);   // Basic texture drawing
-  void DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip, bool flip = false);   // Clipped drawing
-  void DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip, const float scale, bool flip = false);    // Scaled, clipped drawing
-  void DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip, const float scale, const SDL_Point* center, const double angle, bool flip = false); // Rotated, scaled, clipped drawing
-  */
-
   void DrawTexture(Texture* texture, Point position, bool flip = false);   // Basic texture drawing
   void DrawTexture(Texture* texture, Point position, const Rect* clip, bool flip = false);   // Clipped drawing
   void DrawTexture(Texture* texture, Point position, const Rect* clip, const float scale, bool flip = false);    // Scaled, clipped drawing

@@ -29,7 +29,11 @@ class Sprite : public RenderObject, public ISprite
  public:
   // Constructors and Destructors
   Sprite() : RenderObject() {}
-  // TODO Rule of 'three'
+
+  Sprite(const Sprite&) = default;
+  Sprite(Sprite&&) = default;
+  Sprite& operator=(const Sprite&) = default;
+  Sprite& operator=(Sprite&&) = default;
   ~Sprite();
 
   // ISprite

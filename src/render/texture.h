@@ -41,7 +41,6 @@ class Texture
   Texture& operator=(Texture&&) & = default;
 
   // Mutators
-  //inline void SetRenderer(Renderer* renderer) { renderer_ = renderer; }
   bool Load(std::string path);
   void SetColor(Uint8 r, Uint8 g, Uint8 b);
   void SetBlendMode(SDL_BlendMode blending);

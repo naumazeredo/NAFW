@@ -19,8 +19,6 @@ void Sprite::Create(Renderer* renderer, std::string tex_path)
   renderer_ = renderer;
   texture_ = renderer->LoadTexture(tex_path);
   Free();
-  //has_clip_ = false;
-  //has_center_ = false;
   is_flipped_ = false;
   init_ = true;
 }

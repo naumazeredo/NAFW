@@ -58,35 +58,6 @@ Texture* Renderer::LoadTexture(std::string path)
   return tex;
 }
 
-/*
-void Renderer::DrawTexture(Texture* texture, SDL_Point position, bool flip)
-{
-  DrawTexture(texture, position, nullptr, 1.0f, NULL, 0.0, flip);
-}
-
-void Renderer::DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip, bool flip)
-{
-  DrawTexture(texture, position, clip, 1.0f, nullptr, 0.0, flip);
-}
-
-void Renderer::DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip, const float scale, bool flip)
-{
-  DrawTexture(texture, position, clip, scale, nullptr, 0.0, flip);
-}
-
-void Renderer::DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip, const float scale, const SDL_Point* center, const double angle, bool flip)
-{
-  SDL_Rect scalerect;
-  scalerect = {
-    position.x,
-    position.y,
-    (clip != nullptr ? static_cast<int>(clip->w * scale) : static_cast<int>(texture->GetWidth() * scale)),
-    (clip != nullptr ? static_cast<int>(clip->h * scale) : static_cast<int>(texture->GetHeight() * scale))
-  };
-  SDL_RenderCopyEx(renderer_, texture->GetTexture(), clip, &scalerect, angle, center, (flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE));
-}
-*/
-
 void Renderer::DrawTexture(Texture* texture, Point position, bool flip)
 {
   DrawTexture(texture, position, nullptr, 1.0f, NULL, 0.0, flip);
