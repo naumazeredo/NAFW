@@ -12,7 +12,4 @@ TODO:
 -- Client
 -- Server
 
-- Renderer
--- Texture container
-
 - Mixer
