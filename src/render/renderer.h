@@ -12,22 +12,21 @@
 #ifndef NAFW_RENDER_RENDERER_H_
 #define NAFW_RENDER_RENDERER_H_
 
-#include <map>
+#include <vector>
 #include <string>
 #include "../SDL2/SDL_stdinc.h"
 #include "../SDL2/SDL_rect.h"
 #include "../SDL2/SDL_render.h"
 #include "constants.h"
 
-struct SDL_Texture;
 struct SDL_Window;
 struct SDL_Renderer;
 
 namespace nafw
 {
 
-//extern SDL_Color white;
-
+class Point;
+class Rect;
 class Texture;
 
 // TODO Gather all drawing to do one
@@ -45,12 +44,18 @@ class Renderer
   // Texture loader
   Texture* LoadTexture(std::string path);
 
+  /*
   // Texture draw
-  //void DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip = nullptr, const double scale = 1.0, const double angle = 0.0);
   void DrawTexture(Texture* texture, SDL_Point position, bool flip = false);   // Basic texture drawing
   void DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip, bool flip = false);   // Clipped drawing
   void DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip, const float scale, bool flip = false);    // Scaled, clipped drawing
   void DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip, const float scale, const SDL_Point* center, const double angle, bool flip = false); // Rotated, scaled, clipped drawing
+  */
+
+  void DrawTexture(Texture* texture, Point position, bool flip = false);   // Basic texture drawing
+  void DrawTexture(Texture* texture, Point position, const Rect* clip, bool flip = false);   // Clipped drawing
+  void DrawTexture(Texture* texture, Point position, const Rect* clip, const float scale, bool flip = false);    // Scaled, clipped drawing
+  void DrawTexture(Texture* texture, Point position, const Rect* clip, const float scale, const Point* center, const double angle, bool flip = false); // Rotated, scaled, clipped drawing
 
   // Basic draw
   void DrawLine(SDL_Point start, SDL_Point end, SDL_Color color = Color::black);
@@ -67,7 +72,7 @@ class Renderer
 
   // Texture Container
   // FIXME textures can change properties, so it shouldnt be contained by path
-  std::map<std::string, Texture*> texture_container_;
+  std::vector<Texture*> texture_container_;
 };
 
 }

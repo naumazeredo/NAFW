@@ -31,12 +31,17 @@ class Texture
 {
  public:
   // Constructor and Destructor
-  Texture() : renderer_(nullptr) {}
   explicit Texture(Renderer* renderer) : renderer_(renderer) {}
   ~Texture();
 
+  // Rule of 'three'
+  Texture(const Texture&) = default;
+  Texture(Texture&&) = default;
+  Texture& operator=(const Texture&) & = default;
+  Texture& operator=(Texture&&) & = default;
+
   // Mutators
-  inline void SetRenderer(Renderer* renderer) { renderer_ = renderer; }
+  //inline void SetRenderer(Renderer* renderer) { renderer_ = renderer; }
   bool Load(std::string path);
   void SetColor(Uint8 r, Uint8 g, Uint8 b);
   void SetBlendMode(SDL_BlendMode blending);
@@ -46,6 +51,7 @@ class Texture
   // Accessors
   inline int GetWidth() const { return width_; }
   inline int GetHeight() const { return height_; }
+  inline std::string GetPath() const { return path_; }
   SDL_Texture* GetTexture();
  public:
   // Renderer

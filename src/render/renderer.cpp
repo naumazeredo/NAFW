@@ -4,6 +4,7 @@
 #include "../SDL2/SDL_image.h"
 #include "texture.h"
 #include "renderer.h"
+#include "geom.h"
 
 namespace nafw
 {
@@ -34,36 +35,43 @@ Renderer::~Renderer()
 
   // Destroy textures
   if (!texture_container_.empty())
-    for (auto& it : texture_container_)
-      delete std::get<1>(it);
+  {
+    for (auto it = texture_container_.begin(); it != texture_container_.end(); ++it)
+    {
+      delete *it;
+      texture_container_.erase(it);
+    }
+  }
 }
 
 Texture* Renderer::LoadTexture(std::string path)
 {
   // Verify if texture was already loaded
-  auto it = texture_container_.find(path);
-  if (it != texture_container_.end())
-    return it->second;
+  for (auto it : texture_container_)
+    if (it->GetPath().compare(path) == 0)
+      return it;
 
   // If not, create and load the new texture
-  texture_container_[path] = new Texture(this);
-  texture_container_[path]->Load(path);
-  return texture_container_[path];
+  Texture* tex = new Texture(this);
+  tex->Load(path);
+  texture_container_.push_back(tex);
+  return tex;
 }
 
+/*
 void Renderer::DrawTexture(Texture* texture, SDL_Point position, bool flip)
 {
-  DrawTexture(texture, position, NULL, 1.0f, NULL, 0.0, flip);
+  DrawTexture(texture, position, nullptr, 1.0f, NULL, 0.0, flip);
 }
 
 void Renderer::DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip, bool flip)
 {
-  DrawTexture(texture, position, clip, 1.0f, NULL, 0.0, flip);
+  DrawTexture(texture, position, clip, 1.0f, nullptr, 0.0, flip);
 }
 
 void Renderer::DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip, const float scale, bool flip)
 {
-  DrawTexture(texture, position, clip, scale, NULL, 0.0, flip);
+  DrawTexture(texture, position, clip, scale, nullptr, 0.0, flip);
 }
 
 void Renderer::DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect* clip, const float scale, const SDL_Point* center, const double angle, bool flip)
@@ -76,6 +84,45 @@ void Renderer::DrawTexture(Texture* texture, SDL_Point position, const SDL_Rect*
     (clip != nullptr ? static_cast<int>(clip->h * scale) : static_cast<int>(texture->GetHeight() * scale))
   };
   SDL_RenderCopyEx(renderer_, texture->GetTexture(), clip, &scalerect, angle, center, (flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE));
+}
+*/
+
+void Renderer::DrawTexture(Texture* texture, Point position, bool flip)
+{
+  DrawTexture(texture, position, nullptr, 1.0f, NULL, 0.0, flip);
+}
+
+void Renderer::DrawTexture(Texture* texture, Point position, const Rect* clip, bool flip)
+{
+  DrawTexture(texture, position, clip, 1.0f, nullptr, 0.0, flip);
+}
+
+void Renderer::DrawTexture(Texture* texture, Point position, const Rect* clip, const float scale, bool flip)
+{
+  DrawTexture(texture, position, clip, scale, nullptr, 0.0, flip);
+}
+
+void Renderer::DrawTexture(Texture* texture, Point position, const Rect* clip, const float scale, const Point* center, const double angle, bool flip)
+{
+  SDL_Rect cliprect {
+    (clip != nullptr ? static_cast<int>(clip->x) : 0),
+    (clip != nullptr ? static_cast<int>(clip->y) : 0),
+    (clip != nullptr ? static_cast<int>(clip->w) : texture->GetWidth()),
+    (clip != nullptr ? static_cast<int>(clip->h) : texture->GetHeight())
+  };
+  SDL_Rect scalerect {
+    position.x,
+    position.y,
+    (clip != nullptr ? static_cast<int>(clip->w * scale) : static_cast<int>(texture->GetWidth() * scale)),
+    (clip != nullptr ? static_cast<int>(clip->h * scale) : static_cast<int>(texture->GetHeight() * scale))
+  };
+  SDL_Point* ctr = nullptr;
+  if (center != nullptr)
+  {
+    ctr = new SDL_Point;
+    *ctr = center->ToSDL();
+  }
+  SDL_RenderCopyEx(renderer_, texture->GetTexture(), &cliprect, &scalerect, angle, ctr, (flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE));
 }
 
 void Renderer::DrawLine(SDL_Point start, SDL_Point end, SDL_Color color)

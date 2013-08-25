@@ -56,28 +56,28 @@ bool Texture::Load(std::string path)
 
 void Texture::SetColor(Uint8 r, Uint8 g, Uint8 b)
 {
-  SDL_assert(!loaded_);
+  SDL_assert(loaded_);
   // Modulate texture rgb
   SDL_SetTextureColorMod(texture_, r, g, b);
 }
 
 void Texture::SetBlendMode(SDL_BlendMode blending)
 {
-  SDL_assert(!loaded_);
+  SDL_assert(loaded_);
   // Set blending function
   SDL_SetTextureBlendMode(texture_, blending);
 }
 
 void Texture::SetAlpha(Uint8 alpha)
 {
-  SDL_assert(!loaded_);
+  SDL_assert(loaded_);
   // Modulate texture alpha
   SDL_SetTextureAlphaMod(texture_, alpha);
 }
 
 SDL_Texture* Texture::GetTexture()
 {
-  SDL_assert(!loaded_);
+  SDL_assert(loaded_);
   return texture_;
 }
 
@@ -89,7 +89,7 @@ void Texture::Free()
     width_ = 0;
     height_ = 0;
     loaded_ = false;
-    path_.erase();
+    path_.clear();
   }
 }
 

@@ -14,6 +14,8 @@
 #include "timer.h"
 #include "render/renderer.h"
 #include "render/texture.h"
+#include "render/sprite.h"
+#include "render/geom.h"
 
 namespace nafw
 {
@@ -125,6 +127,11 @@ bool Game::Run()
   SDL_assert(this->init_);
 
   // Testing area
+  Sprite spr;
+  //spr.Create(renderer_, "assets/pudge.png", nullptr, nullptr, false);
+  spr.Create(renderer_, "assets/pudge.png");
+  spr.AddClip(new Rect(0, 0, 200, 200), nullptr, false);
+  spr.SetRotation(30.0);
   // -----
 
   // Physics
@@ -216,6 +223,7 @@ bool Game::Run()
     renderer_->ClearScreen();
 
     Draw();
+    spr.Draw(0, 0);
 
     renderer_->RenderScreen();
 
@@ -240,7 +248,6 @@ bool Game::Run()
 void Game::Draw()
 {
   SDL_assert(this->init_);
-
 }
 
 }

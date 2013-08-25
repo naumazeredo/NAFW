@@ -14,7 +14,8 @@ vpath %.cpp src/render/
 LIBS := mingw32 SDL2main SDL2 SDL2_image SDL2_net
 LIBSSOURCE := "C:\SDL-2.0.0-mingw\lib"
 
-all: $(SOURCES) $(EXECUTABLE)
+debug: CXX += -DDEBUG
+debug: $(SOURCES) $(EXECUTABLE)
 release: CXX += -DSDL_ASSERT_LEVEL=1
 release: $(SOURCES) $(EXECUTABLE)
 
