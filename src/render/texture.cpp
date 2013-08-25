@@ -19,33 +19,15 @@ bool Texture::Load(std::string path)
   // Deallocate texture
   Free();
 
-  // Load image
-  SDL_Surface* surface = IMG_Load(path.c_str());
-  if (surface == nullptr)
+  SDL_Texture* temp = IMG_LoadTexture(renderer_->GetRenderer(), path.c_str());
+  if (temp == nullptr)
   {
-    printf("Could not load image: %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
+    printf("Could not load texture %s! IMG error: %s\n", path.c_str(), IMG_GetError());
+    return false;
   }
-  else
-  {
-    // Color key image
-    //SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 0xFF, 0, 0xFF));
 
-    // Create texture from surface pixels
-    texture_ = SDL_CreateTextureFromSurface(renderer_->GetRenderer(), surface);
-    if (texture_ == nullptr)
-    {
-      printf("Could not create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
-    }
-    else
-    {
-      // Get dimensions
-      width_ = surface->w;
-      height_ = surface->h;
-    }
-
-    // Free old surface
-    SDL_FreeSurface(surface);
-  }
+  SDL_QueryTexture(temp, nullptr, nullptr, &width_, &height_);
+  texture_ = temp;
 
   path_ = path;
   loaded_ = true;

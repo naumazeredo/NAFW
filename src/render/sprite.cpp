@@ -40,11 +40,9 @@ void Sprite::AddClip(const Rect* clip, const Point* center, bool flipped)
   is_flipped_ = flipped;
 }
 
-void Sprite::NextFrame() {}
 void Sprite::SetScale(float scale) { scale_ = scale; }
 void Sprite::SetRotation(double angle) { angle_ = angle; }
 
-void Sprite::Step(int delta) {}
 void Sprite::Draw(int x, int y, float depth)
 {
   SDL_assert(init_);

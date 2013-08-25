@@ -28,7 +28,7 @@ class Sprite : public RenderObject, public ISprite
 {
  public:
   // Constructors and Destructors
-  Sprite() : RenderObject() {}
+  Sprite() {}
 
   Sprite(const Sprite&) = default;
   Sprite(Sprite&&) = default;
@@ -39,12 +39,10 @@ class Sprite : public RenderObject, public ISprite
   // ISprite
   virtual void Create(Renderer* renderer, std::string tex_path) override;
   virtual void AddClip(const Rect* clip, const Point* center, bool flipped) override;
-  virtual void NextFrame() override;
   virtual void SetScale(float scale) override;
   virtual void SetRotation(double angle) override;
 
   // IRenderObject
-  virtual void Step(int delta) override;
   virtual void Draw(int x, int y, float depth = 0.0f) override;
 
  private:

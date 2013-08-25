@@ -15,6 +15,7 @@
 #include "render/renderer.h"
 #include "render/texture.h"
 #include "render/sprite.h"
+#include "render/animatedsprite.h"
 #include "render/geom.h"
 
 namespace nafw
@@ -127,11 +128,21 @@ bool Game::Run()
   SDL_assert(this->init_);
 
   // Testing area
-  Sprite spr;
-  //spr.Create(renderer_, "assets/pudge.png", nullptr, nullptr, false);
-  spr.Create(renderer_, "assets/pudge.png");
-  spr.AddClip(new Rect(0, 0, 200, 200), nullptr, false);
-  spr.SetRotation(30.0);
+  AnimatedSprite anim;
+  anim.Create(renderer_, "assets/transp.png");
+
+  anim.AddClip(new Rect(0, 0, 32, 32), nullptr, false);
+  anim.AddClip(new Rect(32, 0, 32, 32), nullptr, false);
+  anim.AddClip(new Rect(64, 0, 32, 32), nullptr, false);
+  anim.AddClip(new Rect(96, 0, 32, 32), nullptr, false);
+
+  anim.AddFrame(1, 1000);
+  anim.AddFrame(2, 1000);
+  anim.AddFrame(3, 1000);
+  anim.AddFrame(2, 1000);
+
+  anim.PlayAnimation();
+  anim.SetAnimationLoop(true);
   // -----
 
   // Physics
@@ -209,6 +220,9 @@ bool Game::Run()
       // Physics
       if (physics_accum >= physics_dt)
       {
+        //
+        anim.Step(physics_dt);
+
         /* TODO Step physics */
         // Pass timer_->GetTime() + delta_physics to physics
 
@@ -223,7 +237,7 @@ bool Game::Run()
     renderer_->ClearScreen();
 
     Draw();
-    spr.Draw(0, 0);
+    anim.Draw(100, 100);
 
     renderer_->RenderScreen();
 
