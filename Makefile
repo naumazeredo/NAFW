@@ -1,18 +1,19 @@
 # C++ Compiler
 CXX=g++
 CXXFLAGS=-c -O -Wall -std=c++11
-LDFLAGS = $(addprefix -L,$(LIBSSOURCE)) $(addprefix -l,$(LIBS))
+LDFLAGS = $(addprefix -l,$(LIBS))
 
 SOURCES := $(wildcard src/*.cpp) \
 	$(wildcard src/render/*.cpp)
+
+VPATH := src:src/render
+
 OBJECTS := $(addprefix obj/,$(notdir $(SOURCES:.cpp=.o)))
 EXECUTABLE = nafw
 
-vpath %.cpp src/
-vpath %.cpp src/render/
+LIBS := SDL2 SDL2_image
 
-LIBS := mingw32 SDL2main SDL2 SDL2_image SDL2_net
-LIBSSOURCE := "C:\SDL-2.0.0-mingw\lib"
+.PHONY: clean obj
 
 debug: CXX += -DDEBUG
 debug: $(SOURCES) $(EXECUTABLE)
@@ -20,7 +21,7 @@ release: CXX += -DSDL_ASSERT_LEVEL=1
 release: $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CXX) -o $@ $^ $(LDFLAGS)
+	$(CXX) $^ $(LDFLAGS) -o $@
 
 $(OBJECTS): | obj
 
@@ -28,10 +29,10 @@ obj:
 	mkdir $@
 
 obj/%.o: %.cpp
-	$(CXX) -o $@ $< $(CXXFLAGS)
+	$(CXX) $< $(CXXFLAGS) -o $@
 
 clean:
-	- $(RM) -R obj $(addsuffix .exe,$(EXECUTABLE))
+	- $(RM) -R obj $(EXECUTABLE)
 
 rebuild:
 	make clean
