@@ -10,7 +10,7 @@
 #ifndef NAFW_RENDER_CONSTANTS_H_
 #define NAFW_RENDER_CONSTANTS_H_
 
-#include "../SDL2/SDL_video.h"
+#include <SDL2/SDL_video.h>
 
 namespace nafw
 {

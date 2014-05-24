@@ -1,5 +1,6 @@
-#include "../SDL2/SDL_assert.h"
-#include "../SDL2/SDL_rect.h"
+#include <SDL2/SDL_assert.h>
+#include <SDL2/SDL_rect.h>
+
 #include "sprite.h"
 #include "texture.h"
 #include "renderobj.h"

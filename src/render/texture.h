@@ -14,9 +14,10 @@
 #define NAFW_RENDER_TEXTURE_H_
 
 #include <string>
-#include "../SDL2/SDL_stdinc.h"
-#include "../SDL2/SDL_rect.h"
-#include "../SDL2/SDL_render.h"
+
+#include <SDL2/SDL_stdinc.h>
+#include <SDL2/SDL_rect.h>
+#include <SDL2/SDL_render.h>
 
 struct SDL_Texture;
 

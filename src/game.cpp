@@ -9,7 +9,9 @@
 
 #include <cstdio>
 #include <sstream>
-#include "SDL2/SDL.h"
+
+#include <SDL2/SDL.h>
+
 #include "game.h"
 #include "timer.h"
 #include "render/renderer.h"
@@ -128,21 +130,6 @@ bool Game::Run()
   SDL_assert(this->init_);
 
   // Testing area
-  AnimatedSprite anim;
-  anim.Create(renderer_, "assets/transp.png");
-
-  anim.AddClip(new Rect(0, 0, 32, 32), nullptr, false);
-  anim.AddClip(new Rect(32, 0, 32, 32), nullptr, false);
-  anim.AddClip(new Rect(64, 0, 32, 32), nullptr, false);
-  anim.AddClip(new Rect(96, 0, 32, 32), nullptr, false);
-
-  anim.AddFrame(1, 1000);
-  anim.AddFrame(2, 1000);
-  anim.AddFrame(3, 1000);
-  anim.AddFrame(2, 1000);
-
-  anim.PlayAnimation();
-  anim.SetAnimationLoop(true);
   // -----
 
   // Physics
@@ -220,8 +207,8 @@ bool Game::Run()
       // Physics
       if (physics_accum >= physics_dt)
       {
+        // Testing area
         //
-        anim.Step(physics_dt);
 
         /* TODO Step physics */
         // Pass timer_->GetTime() + delta_physics to physics
@@ -237,7 +224,6 @@ bool Game::Run()
     renderer_->ClearScreen();
 
     Draw();
-    anim.Draw(100, 100);
 
     renderer_->RenderScreen();
 

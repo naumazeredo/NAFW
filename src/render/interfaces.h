@@ -40,7 +40,7 @@ interface ISprite
 interface IAnimation : public ISteppable
 {
  public:
-  virtual void AddFrame(unsigned int clip_index, unsigned int delta);
+  virtual void AddFrame(unsigned int clip_index, unsigned int delta) =0;
   virtual void SetAnimationLoop(bool loop)=0;
   virtual void PlayAnimation()=0;
   virtual void PauseAnimation()=0;

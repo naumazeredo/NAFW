@@ -1,7 +1,9 @@
 #include <cstdio>
 #include <cmath>
-#include "../SDL2/SDL_video.h"
-#include "../SDL2/SDL_image.h"
+
+#include <SDL2/SDL_video.h>
+#include <SDL2/SDL_image.h>
+
 #include "texture.h"
 #include "renderer.h"
 #include "geom.h"

@@ -14,9 +14,11 @@
 
 #include <vector>
 #include <string>
-#include "../SDL2/SDL_stdinc.h"
-#include "../SDL2/SDL_rect.h"
-#include "../SDL2/SDL_render.h"
+
+#include <SDL2/SDL_stdinc.h>
+#include <SDL2/SDL_rect.h>
+#include <SDL2/SDL_render.h>
+
 #include "constants.h"
 
 struct SDL_Window;
