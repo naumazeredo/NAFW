@@ -14,12 +14,10 @@
 
 # Executables
 *.exe
+*.out
 
 # Swap files
 *.swp
 
 # Dynamic libraries
 *.dll
-
-# SDL2 library
-src/SDL2/
