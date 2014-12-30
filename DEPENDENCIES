@@ -1,0 +1,17 @@
+Not Available Framework
+
+Windows
+-------
+
+- gcc 4.8.1
+- GNU make 3.82
+- SDL2.0.0 (mingw)
+- SDL2_image-2.0
+
+Linux
+-----
+
+- xorg-dev
+- g++ 4.8
+- libsdl2-dev
+- libsdl2-image-dev

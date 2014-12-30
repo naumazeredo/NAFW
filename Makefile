@@ -1,6 +1,6 @@
 # C++ Compiler
 CXX=g++
-CXXFLAGS=-c -O -Wall -std=c++11
+CXXFLAGS=-c -Wall -std=c++11
 LDFLAGS = $(addprefix -l,$(LIBS))
 
 SOURCES := $(wildcard src/*.cpp) \
@@ -9,7 +9,7 @@ SOURCES := $(wildcard src/*.cpp) \
 VPATH := src:src/render
 
 OBJECTS := $(addprefix obj/,$(notdir $(SOURCES:.cpp=.o)))
-EXECUTABLE = nafw
+EXECUTABLE = nafw.out
 
 LIBS := SDL2 SDL2_image
 
@@ -26,13 +26,13 @@ $(EXECUTABLE): $(OBJECTS)
 $(OBJECTS): | obj
 
 obj:
-	mkdir $@
+	@mkdir -p $@
 
 obj/%.o: %.cpp
 	$(CXX) $< $(CXXFLAGS) -o $@
 
 clean:
-	- $(RM) -R obj $(EXECUTABLE)
+	@- $(RM) -R obj $(EXECUTABLE)
 
 rebuild:
 	make clean
